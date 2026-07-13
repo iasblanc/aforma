@@ -24,7 +24,7 @@ const COMPONENTES = [
       { t: 'Existe algo importante que eu sustentei mesmo quando teria sido mais fácil (ou mais lucrativo) abrir mão.', m: 'inegociavel' },
       { t: 'Quando algo que dependia de outra pessoa atrasou, eu fiz a minha parte seguinte mesmo assim — em vez de esperar.', m: 'posse' },
       { t: 'Tenho por escrito duas ou três coisas que não entram em negociação nem nos dias maus — e elas sobreviveram aos últimos 90 dias.', m: 'inegociavel' },
-      { t: 'Nas conversas sobre minhas metas, falei mais em "o que eu faço" do que em "o que me falta" — sem terceirizar o resultado para mercado, chefe ou contexto.', m: 'traducao' }
+      { t: 'Nas conversas sobre minhas metas, falei mais em "o que eu faço" do que em "o que me falta" — sem terceirizar o resultado para chefe, professor, mercado ou contexto.', m: 'traducao' }
     ],
     drill: [
       { t: 'Na última vez que um resultado importante falhou por causa de terceiros, eu soube apontar qual era a MINHA próxima resposta.', m: 'posse' },
@@ -47,12 +47,12 @@ const COMPONENTES = [
       { t: 'Disse "não" a oportunidades, convites ou distrações que competiam com a minha prioridade.', m: 'nao' },
       { t: 'Tive blocos regulares de trabalho profundo, sem celular ao alcance, na minha meta principal.', m: 'bloco' },
       { t: 'Sei dizer qual meta, resolvida, facilita ou aposenta as outras — e é nela que está a maior parte do meu esforço.', m: 'eleicao' },
-      { t: 'Pausei ou encerrei formalmente pelo menos um projeto ou frente para proteger a prioridade — e comuniquei a quem afetava.', m: 'nao' },
+      { t: 'Pausei ou encerrei, de forma declarada, pelo menos uma atividade, projeto ou compromisso para proteger a prioridade — e avisei quem era afetado.', m: 'nao' },
       { t: 'Nos meus blocos de trabalho importante, o celular ficou em outro cômodo — não apenas silencioso ou virado para baixo.', m: 'bloco' }
     ],
     drill: [
       { t: 'Se me perguntarem agora, digo em uma frase qual é A coisa do trimestre — sem hesitar entre duas.', m: 'eleicao' },
-      { t: 'Meus "nãos" têm nome próprio: sei dizer QUAIS projetos e convites recusei — não só que "me distraí menos".', m: 'nao' },
+      { t: 'Meus "nãos" têm nome próprio: sei dizer QUAIS atividades, projetos e convites recusei — não só que "me distraí menos".', m: 'nao' },
       { t: 'Meus blocos têm hora de começar amarrada a algo que já existe na rotina — não ficam "para quando der".', m: 'bloco' }
     ]
   },
@@ -88,7 +88,7 @@ const COMPONENTES = [
     mecs: {
       pronto:    { nome: 'Começar antes de estar pronto', acao: 'Defina a <b>menor versão pública</b> da sua meta e <b>execute em 48 horas</b> — o prazo curto mata a negociação interna: em 48 horas não cabe aperfeiçoar; cabe apenas ir.' },
       rastro:    { nome: 'O rastro semanal', acao: 'Instale a regra permanente: <b>toda semana termina com um rastro público</b> — algo feito que saiu de você e existe no mundo, verificável.' },
-      fronteira: { nome: 'A fronteira', acao: 'Faça, ainda esta semana, <b>a ação que pode receber um "não"</b> — o envio, a ligação, a oferta, a publicação. Se não pode gerar um "não", ainda é preparação.' }
+      fronteira: { nome: 'A fronteira', acao: 'Faça, ainda esta semana, <b>a ação que pode receber um "não"</b> — o envio, a inscrição, a ligação, a oferta, a publicação. Se não pode gerar um "não", ainda é preparação.' }
     },
     base: [
       { t: 'Comecei as coisas importantes antes de me sentir pronto — sem esperar o cenário ideal.', m: 'pronto' },
@@ -96,10 +96,10 @@ const COMPONENTES = [
       { t: 'Entre planejar mais e fazer o próximo passo imperfeito, escolhi fazer.', m: 'pronto' },
       { t: 'Lancei, enviei ou mostrei algo em versão imperfeita — em vez de esperar a versão de que eu não teria vergonha.', m: 'pronto' },
       { t: 'Consigo listar, com datas, o que produzi na minha meta nas últimas duas semanas — sem depender da memória.', m: 'rastro' },
-      { t: 'Fiz, nos últimos 30 dias, pelo menos uma ação que podia receber um "não" — proposta, oferta, envio, publicação.', m: 'fronteira' }
+      { t: 'Fiz, nos últimos 30 dias, pelo menos uma ação que podia receber um "não" — um envio, uma inscrição, uma apresentação, uma proposta, uma publicação.', m: 'fronteira' }
     ],
     drill: [
-      { t: 'Nos últimos 90 dias, o tempo que passei produzindo coisas que saíram de mim foi maior que o tempo preparando (estudando, planejando, organizando).', m: 'pronto' },
+      { t: 'Nos últimos 90 dias, o tempo em prática que deixa rastro (exercícios feitos, textos escritos, tentativas reais) foi maior que o tempo só consumindo (assistindo, lendo, grifando).', m: 'pronto' },
       { t: 'Nos últimos 7 dias existe pelo menos um rastro NOVO — não estou vivendo de produção antiga.', m: 'rastro' },
       { t: 'A minha última semana terminou com algo do lado de lá da fronteira — publicado, enviado, oferecido.', m: 'fronteira' }
     ]
@@ -167,12 +167,12 @@ const COMPONENTES = [
       { t: 'Tenho um momento fixo (semanal ou quinzenal) em que confiro meus números e ajusto a rota.', m: 'formato' },
       { t: 'Quando não cumpro o que declarei, isso tem algum custo visível — nem que seja uma conversa desconfortável.', m: 'custo' },
       { t: 'A pessoa que sabe da minha meta pergunta de verdade — não aplaude por educação.', m: 'testemunha' },
-      { t: 'Nas minhas conferências, as promessas são específicas e auditáveis — conferidas contra rastros, não contra memória.', m: 'formato' },
+      { t: 'No meu momento de conferência, o que eu declaro é específico e verificável — conferido contra rastros, não contra memória.', m: 'formato' },
       { t: 'Já paguei, nos últimos 90 dias, o custo combinado de um "não fiz" — a conversa desconfortável aconteceu.', m: 'custo' }
     ],
     drill: [
       { t: 'A minha testemunha tem data marcada para a próxima conferência — não é "a gente se fala".', m: 'testemunha' },
-      { t: 'As minhas conferências têm as mesmas três perguntas, com números — não viram conversa.', m: 'formato' },
+      { t: 'O meu momento de conferência tem as mesmas três perguntas, com números — não vira conversa.', m: 'formato' },
       { t: 'Quando declarei e não fiz, algo aconteceu de verdade — o desconforto teve endereço.', m: 'custo' }
     ]
   }
@@ -303,7 +303,7 @@ function renderIntro() {
     <div class="intro">
       <div class="tag">O EXAME QUE FECHA A PARTE II DO LIVRO</div>
       <h1>O Raio-X <span class="thin">da Forma.</span></h1>
-      <p class="lead">Você entendeu a equação, viu a liquidação do conteúdo, conheceu a balança. <b>Antes de construir, meça.</b> Responda pensando nos seus <b>últimos 90 dias</b> — não na sua intenção, não no seu melhor momento, não em quem você quer ser. Nos fatos.</p>
+      <p class="lead">Você entendeu a equação, viu a liquidação do conteúdo, conheceu a balança. <b>Antes de construir, meça.</b> Responda pensando nos seus <b>últimos 90 dias</b> — não na sua intenção, não no seu melhor momento, não em quem você quer ser. Nos fatos. E a sua meta pode ser qualquer uma — estudo, corpo, dinheiro, carreira, um projeto: <b>a lente é a mesma.</b></p>
       <div class="honesty">
         <b>Uma nota de honestidade antes de começar:</b> isto é um <b>instrumento de autorreflexão</b>, não um teste psicométrico validado — nenhum número aqui te mede por fora. A régua é você, olhando os próprios noventa dias sem advogado de defesa.
       </div>
