@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Raio-X da Forma — A FORMA</title>
+<meta name="description" content="O exame que fecha a Parte II do livro A FORMA. 21 afirmações, 15 minutos, e você descobre onde a sua forma sustenta e onde ela vaza.">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+  .stage { max-width: 780px; margin: 0 auto; padding: 70px 24px 110px; }
+
+  /* ---- INTRO ---- */
+  .intro h1 { margin-top: 26px; }
+  .intro .lead { margin-top: 22px; }
+  .honesty {
+    margin-top: 34px; border-left: 3px solid var(--accent); background: var(--panel);
+    padding: 22px 26px; font-size: 15px; color: var(--muted); line-height: 1.7;
+  }
+  .honesty b { color: var(--text); }
+  .scale-legend { display: flex; gap: 14px; margin-top: 30px; flex-wrap: wrap; }
+  .scale-item { border: 1px solid var(--line-2); background: var(--panel); padding: 14px 18px; flex: 1; min-width: 180px; }
+  .scale-item .v { font-family: var(--mono); font-weight: 600; font-size: 22px; color: var(--accent); }
+  .scale-item .t { font-size: 13px; color: var(--dim); margin-top: 4px; line-height: 1.4; }
+  .intro .btn { margin-top: 38px; }
+
+  /* ---- PROGRESS ---- */
+  .progress { position: sticky; top: 0; z-index: 30; background: var(--bg); border-bottom: 1px solid var(--line); padding: 14px 0; }
+  .progress-inner { max-width: 780px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 16px; }
+  .progress-label { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; color: var(--dim); white-space: nowrap; text-transform: uppercase; }
+  .progress-track { flex: 1; height: 6px; background: var(--line-2); position: relative; }
+  .progress-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); width: 0; transition: width .4s ease; }
+
+  /* ---- STEP ---- */
+  .step-kicker { font-family: var(--mono); font-size: 11.5px; letter-spacing: .24em; color: var(--accent); text-transform: uppercase; }
+  .step-title { font-size: clamp(28px, 3.4vw, 40px); font-weight: 600; margin-top: 10px; letter-spacing: -0.015em; }
+  .q { margin-top: 40px; }
+  .q-text { font-size: 17px; line-height: 1.6; }
+  .q-text .qn { font-family: var(--mono); color: var(--faint); font-size: 13px; margin-right: 10px; }
+  .q-opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+  .q-opt {
+    border: 1px solid var(--line-2); background: var(--panel); padding: 14px 12px;
+    cursor: pointer; text-align: center; transition: border-color .15s ease, background .15s ease;
+  }
+  .q-opt .v { font-family: var(--mono); font-weight: 600; font-size: 19px; }
+  .q-opt .t { font-size: 11.5px; color: var(--dim); margin-top: 3px; line-height: 1.35; }
+  .q-opt:hover { border-color: var(--dim); }
+  .q-opt.sel { border-color: var(--accent); background: var(--panel-2); }
+  .q-opt.sel .v { color: var(--accent); }
+  .step-nav { display: flex; justify-content: space-between; margin-top: 52px; gap: 14px; }
+
+  /* ---- RESULT ---- */
+  .res-total { font-family: var(--mono); font-size: 13px; color: var(--dim); letter-spacing: .12em; margin-top: 8px; }
+  .res-total b { color: var(--text); }
+  .res-panel { margin-top: 40px; }
+  .res-bars { display: flex; flex-direction: column; gap: 13px; }
+  .res-note { margin-top: 22px; }
+
+  .diag { margin-top: 46px; }
+  .diag-h { font-family: var(--mono); font-size: 12px; letter-spacing: .24em; text-transform: uppercase; margin-bottom: 18px; }
+  .diag-h.cir { color: var(--danger); }
+  .diag-h.fun { color: var(--ok); }
+  .card { border: 1px solid var(--line-2); background: var(--panel); padding: 28px 26px; margin-bottom: 18px; position: relative; }
+  .card.cir { border-left: 3px solid var(--danger); }
+  .card.fun { border-left: 3px solid var(--ok); }
+  .card .c-name { font-weight: 600; font-size: 20px; }
+  .card .c-score { font-family: var(--mono); font-size: 12px; color: var(--dim); float: right; letter-spacing: .1em; }
+  .card .c-blade { font-size: 15.5px; color: var(--muted); font-style: normal; margin-top: 12px; line-height: 1.6; border-left: 2px solid var(--line-2); padding-left: 14px; }
+  .card .c-cap { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: .16em; margin-top: 16px; text-transform: uppercase; }
+  .card .c-act { font-size: 14.5px; color: var(--dim); margin-top: 8px; line-height: 1.65; }
+  .card .c-act b { color: var(--text); font-weight: 500; }
+
+  .low-note {
+    margin-top: 10px; border-left: 3px solid var(--accent); background: var(--panel);
+    padding: 20px 24px; font-size: 14.5px; color: var(--muted); line-height: 1.7;
+  }
+
+  /* ---- DOWNLOAD GATE ---- */
+  .gate { margin-top: 56px; border: 1px solid var(--accent); background: var(--panel); padding: 34px 30px; position: relative; }
+  .gate .panel-label { color: var(--accent); }
+  .gate h3 { font-size: 21px; font-weight: 600; }
+  .gate p { font-size: 14.5px; color: var(--dim); margin-top: 10px; line-height: 1.65; }
+  .gate-row { display: flex; gap: 10px; margin-top: 20px; }
+  .gate-row input { flex: 1; }
+  .redo { margin-top: 40px; text-align: center; }
+
+  @media (max-width: 640px) {
+    .q-opts { grid-template-columns: 1fr; }
+    .q-opt { text-align: left; display: flex; align-items: baseline; gap: 12px; }
+    .gate-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav class="nav">
+      <a class="brand" href="/">A <b>FORMA</b></a>
+      <div class="nav-links">
+        <a href="/#equacao">a equação</a>
+        <a href="/#anatomia">a anatomia</a>
+        <a href="/#autor">o autor</a>
+        <a class="hot" href="/raiox">&gt; raio-x</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="progress" id="progress" style="display:none;">
+  <div class="progress-inner">
+    <span class="progress-label" id="progress-label">ETAPA 1/7</span>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+</div>
+
+<main>
+  <div class="stage" id="stage">
+    <!-- renderizado por JS -->
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <span>O RAIO-X DA FORMA — INSTRUMENTO DE AUTORREFLEXÃO</span>
+    <span><a href="/">← A FORMA</a></span>
+  </div>
+</footer>
+
+<script src="/assets/config.js"></script>
+<script src="/assets/leads.js"></script>
+<script src="/assets/raiox.js"></script>
+</body>
+</html>
