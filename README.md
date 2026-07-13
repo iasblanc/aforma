@@ -15,7 +15,15 @@ downloads/A_FORMA_Plano_90_Dias.pdf → material liberado após e-mail
 vercel.json             → clean URLs + headers de segurança
 ```
 
-## 1. Configurar o Supabase (captura de e-mails)
+## 1. Supabase (captura de e-mails) — ✅ JÁ CONFIGURADO
+
+Projeto: **a-forma** (`ebhlutiavptgmgwbohxo`, região sa-east-1). A tabela `leads`
+já foi criada com RLS somente-INSERT e o `assets/config.js` já está preenchido.
+Para exportar os e-mails: painel Supabase → Table Editor → leads → Export CSV.
+Se surgir abuso/spam no formulário, o endurecimento é mover a inserção para uma
+Edge Function com rate limiting (a chave pública passa a não inserir direto).
+
+Referência — o SQL aplicado:
 
 No SQL Editor do seu projeto Supabase, execute:
 
