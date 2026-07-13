@@ -73,6 +73,22 @@
   .card .c-act { font-size: 14.5px; color: var(--dim); margin-top: 8px; line-height: 1.65; }
   .card .c-act b { color: var(--text); font-weight: 500; }
 
+  /* ---- MODOS / RETOMADA / UPGRADE ---- */
+  .mode-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:34px; }
+  .mode-card { border:1px solid var(--line-2); background:var(--panel); padding:26px 24px; cursor:pointer; transition:border-color .15s ease, transform .12s ease; display:flex; flex-direction:column; gap:10px; }
+  .mode-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .mode-tag { font-family:var(--mono); font-size:10.5px; letter-spacing:.22em; color:var(--dim); text-transform:uppercase; }
+  .mode-name { font-weight:600; font-size:19px; }
+  .mode-card p { font-size:13.5px; color:var(--dim); line-height:1.6; flex:1; }
+  .mode-meta { font-family:var(--mono); font-size:11px; color:var(--faint); letter-spacing:.14em; }
+  .resume-box { margin-top:30px; border:1px solid var(--accent); background:var(--panel); padding:22px 24px; font-size:15px; }
+  .resume-row { display:flex; gap:12px; margin-top:16px; flex-wrap:wrap; }
+  .upgrade-box { margin-top:46px; border:1px dashed var(--accent); background:var(--panel); padding:30px 28px; position:relative; }
+  .upgrade-box h3 { font-size:20px; font-weight:600; }
+  .upgrade-box p { font-size:14.5px; color:var(--dim); margin:10px 0 18px; line-height:1.65; }
+  @media (max-width:640px) { .mode-grid { grid-template-columns:1fr; } }
+
+  .p-src { display:block; font-family:var(--mono); font-size:10.5px; color:var(--faint); letter-spacing:.16em; margin-top:10px; }
   .low-note {
     margin-top: 10px; border-left: 3px solid var(--accent); background: var(--panel);
     padding: 20px 24px; font-size: 14.5px; color: var(--muted); line-height: 1.7;
