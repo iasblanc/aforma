@@ -560,6 +560,56 @@ function temDrill(idx) {
   return COMPONENTES[idx].drill.some((_, q) => S.drillResp[`d${idx}-${q}`] !== undefined);
 }
 
+
+// ---------- gráfico de teia (SVG puro) ----------
+const RADAR_LABELS = { atitude:'ATITUDE', foco:'FOCO', plano:'PLANO', execucao:'EXECUÇÃO', constancia:'CONSTÂNCIA', resiliencia:'RESILIÊNCIA', prestacao:'P. DE CONTAS' };
+function renderRadar(res) {
+  const W = 460, H = 400, cx = W/2, cy = H/2 + 6, R = 138;
+  const N = res.length;
+  const ang = i => -Math.PI/2 + (i * 2*Math.PI / N);
+  const pt = (i, f) => [cx + Math.cos(ang(i)) * R * f, cy + Math.sin(ang(i)) * R * f];
+  const poly = f => res.map((_, i) => pt(i, f).map(v => v.toFixed(1)).join(',')).join(' ');
+
+  // anéis de grade (1/3, 2/3, 3/3) + eixos
+  let grid = [1/3, 2/3, 1].map(f =>
+    `<polygon points="${poly(f)}" fill="none" stroke="var(--line-2)" stroke-width="1"/>`).join('');
+  grid += res.map((_, i) => {
+    const [x, y] = pt(i, 1);
+    return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--line-2)" stroke-width="1"/>`;
+  }).join('');
+
+  // polígono do resultado
+  const shape = res.map((c, i) => pt(i, Math.max(c.frac, 0.02)).map(v => v.toFixed(1)).join(',')).join(' ');
+
+  // vértices coloridos pelo diagnóstico
+  const dots = res.map((c, i) => {
+    const [x, y] = pt(i, Math.max(c.frac, 0.02));
+    const cor = S.cirurgiaIdx.includes(c.idx) ? 'var(--danger)' : (c.frac >= 0.83 ? 'var(--ok)' : 'var(--accent)');
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="${cor}" stroke="var(--panel)" stroke-width="1.5"/>`;
+  }).join('');
+
+  // rótulos externos
+  const labels = res.map((c, i) => {
+    const [x, y] = pt(i, 1.19);
+    const a = ang(i);
+    const anchor = Math.abs(Math.cos(a)) < 0.25 ? 'middle' : (Math.cos(a) > 0 ? 'start' : 'end');
+    const cor = S.cirurgiaIdx.includes(c.idx) ? 'var(--danger)' : (c.frac >= 0.83 ? 'var(--ok)' : 'var(--dim)');
+    return `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="${anchor}"
+      font-family="var(--mono)" font-size="10.5" letter-spacing="1.5" fill="${cor}">${RADAR_LABELS[c.id]}</text>
+      <text x="${x.toFixed(1)}" y="${(y + 18).toFixed(1)}" text-anchor="${anchor}"
+      font-family="var(--mono)" font-size="9.5" fill="var(--faint)">${c.score}/${c.max}</text>`;
+  }).join('');
+
+  return `<svg class="radar" viewBox="0 0 ${W} ${H}" role="img" aria-label="Gráfico de teia dos sete componentes da forma">
+    ${grid}
+    <g class="radar-shape">
+      <polygon points="${shape}" fill="rgba(242,163,60,.16)" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+      ${dots}
+    </g>
+    ${labels}
+  </svg>`;
+}
+
 // ============================================================
 // RESULTADO
 // ============================================================
@@ -585,7 +635,9 @@ function renderResultado() {
     <div class="res-total">TOTAL: <b>${total}/${maxTotal}</b> — mas o número total importa menos do que o desenho.</div>
 
     <div class="panel res-panel">
-      <div class="panel-label">FIG. 02 — SEUS 7 COMPONENTES</div>
+      <div class="panel-label">FIG. 02 — O DESENHO DOS SEUS 7 COMPONENTES</div>
+      <div class="fig-grid">
+      <div class="radar-wrap">${renderRadar(res)}</div>
       <div class="res-bars">
         ${res.map(c => {
           const isCir = S.cirurgiaIdx.includes(c.idx);
@@ -597,6 +649,7 @@ function renderResultado() {
             <span class="bar-score">${c.score}/${c.max}</span>
           </div>`;
         }).join('')}
+      </div>
       </div>
       <div class="mono-note res-note">// os dois componentes mais baixos são o seu fator fraco —<br>// o denominador que está limitando o produto inteiro da sua equação.</div>
     </div>`;
@@ -687,6 +740,7 @@ function renderResultado() {
   requestAnimationFrame(() => {
     setTimeout(() => {
       stage.querySelectorAll('.bar-fill').forEach(b => { b.style.width = b.dataset.w + '%'; });
+      const rs = stage.querySelector('.radar-shape'); if (rs) rs.classList.add('in');
     }, 80);
   });
 

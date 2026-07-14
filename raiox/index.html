@@ -88,6 +88,14 @@
   .upgrade-box p { font-size:14.5px; color:var(--dim); margin:10px 0 18px; line-height:1.65; }
   @media (max-width:640px) { .mode-grid { grid-template-columns:1fr; } }
 
+  /* ---- TEIA ---- */
+  .fig-grid { display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:center; }
+  .radar-wrap { display:flex; justify-content:center; }
+  .radar { width:100%; max-width:430px; height:auto; }
+  .radar-shape { transform-origin: 50% 51.5%; transform: scale(.4); opacity:0; transition: transform 1s cubic-bezier(.22,1,.36,1), opacity .8s ease; }
+  .radar-shape.in { transform: scale(1); opacity:1; }
+  @media (max-width:760px) { .fig-grid { grid-template-columns:1fr; } }
+
   .p-src { display:block; font-family:var(--mono); font-size:10.5px; color:var(--faint); letter-spacing:.16em; margin-top:10px; }
   .low-note {
     margin-top: 10px; border-left: 3px solid var(--accent); background: var(--panel);
