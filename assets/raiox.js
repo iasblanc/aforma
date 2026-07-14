@@ -282,6 +282,7 @@ function setProgress(label) {
 
 function render() {
   window.scrollTo({ top: 0 });
+  pararVidaRadar();
   if (S.fase !== 'intro') salvar(); // a intro nunca sobrescreve uma sessão salva
   if (S.fase === 'intro') return renderIntro();
   if (S.fase === 'base') return renderBase(S.passo);
@@ -585,7 +586,7 @@ function renderRadar(res) {
   const dots = res.map((c, i) => {
     const [x, y] = pt(i, Math.max(c.frac, 0.02));
     const cor = S.cirurgiaIdx.includes(c.idx) ? 'var(--danger)' : (c.frac >= 0.83 ? 'var(--ok)' : 'var(--accent)');
-    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="${cor}" stroke="var(--panel)" stroke-width="1.5"/>`;
+    return `<circle data-i="${i}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="${cor}" stroke="var(--panel)" stroke-width="1.5"/>`;
   }).join('');
 
   // rótulos externos
@@ -600,14 +601,76 @@ function renderRadar(res) {
       font-family="var(--mono)" font-size="9.5" fill="var(--faint)">${c.score}/${c.max}</text>`;
   }).join('');
 
+  // anéis de pulso nos vértices de cirurgia (batimento)
+  const pulses = res.map((c, i) => {
+    if (!S.cirurgiaIdx.includes(c.idx)) return '';
+    const [x, y] = pt(i, Math.max(c.frac, 0.02));
+    return `<circle class="pulse" data-i="${i}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="none" stroke="var(--danger)" stroke-width="1.5"/>`;
+  }).join('');
+
   return `<svg class="radar" viewBox="0 0 ${W} ${H}" role="img" aria-label="Gráfico de teia dos sete componentes da forma">
+    <defs><filter id="radar-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="7" result="b"/>
+    </filter></defs>
     ${grid}
-    <g class="radar-shape">
-      <polygon points="${shape}" fill="rgba(242,163,60,.16)" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
-      ${dots}
+    <g class="radar-shape" data-cx="${cx}" data-cy="${cy}" data-r="${R}">
+      <polygon class="radar-halo" points="${shape}" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linejoin="round" filter="url(#radar-glow)" opacity=".22"/>
+      <polygon class="radar-poly" points="${shape}" fill="rgba(242,163,60,.16)" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+      ${pulses}
+      ${dots.replace(/<circle /g, '<circle class="radar-dot" ')}
     </g>
     ${labels}
   </svg>`;
+}
+
+
+// ---------- a teia viva: respiração orgânica ----------
+let radarLifeId = null;
+function pararVidaRadar() { if (radarLifeId) { cancelAnimationFrame(radarLifeId); radarLifeId = null; } }
+function iniciarVidaRadar(res) {
+  const svg = stage.querySelector('svg.radar');
+  if (!svg) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const g = svg.querySelector('.radar-shape');
+  const cx = parseFloat(g.dataset.cx), cy = parseFloat(g.dataset.cy), R = parseFloat(g.dataset.r);
+  const N = res.length;
+  const ang = i => -Math.PI/2 + (i * 2*Math.PI / N);
+  const fracs = res.map(c => Math.max(c.frac, 0.02));
+  const vel = fracs.map((_, i) => 0.45 + (i % 3) * 0.14);   // ritmos próprios
+  const fase = fracs.map((_, i) => i * 2.39);                // fases distribuídas
+  const AMP = 0.02;                                          // ~2% do raio — vivo, não mentiroso
+
+  const poly = g.querySelector('.radar-poly');
+  const halo = g.querySelector('.radar-halo');
+  const dots = [...g.querySelectorAll('.radar-dot')];
+  const pulses = [...g.querySelectorAll('.pulse')];
+
+  const t0 = performance.now();
+  function frame(now) {
+    const t = (now - t0) / 1000;
+    const pts = fracs.map((f, i) => {
+      const ff = f + AMP * Math.sin(vel[i] * t + fase[i]);
+      return [cx + Math.cos(ang(i)) * R * ff, cy + Math.sin(ang(i)) * R * ff];
+    });
+    const str = pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+    poly.setAttribute('points', str);
+    halo.setAttribute('points', str);
+    halo.setAttribute('opacity', (0.16 + 0.10 * (0.5 + 0.5 * Math.sin(t * 0.6))).toFixed(3));
+    dots.forEach(d => {
+      const i = parseInt(d.dataset.i, 10);
+      d.setAttribute('cx', pts[i][0].toFixed(1)); d.setAttribute('cy', pts[i][1].toFixed(1));
+    });
+    pulses.forEach(p => {
+      const i = parseInt(p.dataset.i, 10);
+      p.setAttribute('cx', pts[i][0].toFixed(1)); p.setAttribute('cy', pts[i][1].toFixed(1));
+      const fase2 = (t / 2.6 + i * 0.5) % 1;                 // batimento: expande e some
+      p.setAttribute('r', (5 + fase2 * 13).toFixed(1));
+      p.setAttribute('opacity', (0.55 * (1 - fase2)).toFixed(3));
+    });
+    radarLifeId = requestAnimationFrame(frame);
+  }
+  radarLifeId = requestAnimationFrame(frame);
 }
 
 // ============================================================
@@ -741,6 +804,7 @@ function renderResultado() {
     setTimeout(() => {
       stage.querySelectorAll('.bar-fill').forEach(b => { b.style.width = b.dataset.w + '%'; });
       const rs = stage.querySelector('.radar-shape'); if (rs) rs.classList.add('in');
+      setTimeout(() => iniciarVidaRadar(res), 1050); // a respiração assume após a entrada
     }, 80);
   });
 
